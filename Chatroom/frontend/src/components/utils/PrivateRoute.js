@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-export default function PrivateRoute({component: component, authed, ...rest}) {
+export default function PrivateRoute({component: Component, authed, ...rest}) {
     return (
         <Route
             {...rest}
