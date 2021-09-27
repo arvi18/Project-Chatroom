@@ -1,14 +1,30 @@
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { UserContext } from "../utils/UserContext";
+import { getCurrentUser, loginUser, setAxiosAuthToken, setToken, unsetCurrentuser } from "../services/auth";
 
 function Login() {
   const [userName, setuserName] = useState();
   const [passWord, setpassWord] = useState();
   const { isAuth, setisAuth } = useContext(UserContext);
 
+  let history=useHistory();
+
   const handleSubmit=(e)=>{
       e.preventDefault();
+      loginUser(username, passWord)
+      .then((res)=>{
+        const auth_token=res;
+        setAxiosAuthToken(auth_token);
+        setToken(auth_token);
+        getCurrentUser();
+        setisAuth(true);
+        history.push("/");
+      })
+      .catch((err)=>{
+        unsetCurrentuser()
+        console.log(err);
+      });
   }
 
   return (

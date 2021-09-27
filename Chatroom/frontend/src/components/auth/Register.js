@@ -1,20 +1,30 @@
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { UserContext } from "../utils/UserContext";
+import {registerUser} from '../services/auth';
 
 function Register() {
     const [userName, setuserName] = useState();
     const [email, setemail] = useState();
     const [passWord, setpassWord] = useState();
     const [passWord_two, setpassWord_two] = useState();
+
     const { isAuth, setisAuth } = useContext(UserContext);
+
+    let history=useHistory();
 
     const handleSubmit=(e)=>{
         e.preventDefault();
         if(passWord!==passWord_two){
             window.alert("Passwords do not match!")
         }else{
-            console.log('passWord:', passWord)
+            const registered=registerUser(userName, email, passWord);
+            if(registered===true){
+                setisAuth(true);
+                history.push("/");
+            }else{
+                history.push("/register");
+            }
         }
     }
 
